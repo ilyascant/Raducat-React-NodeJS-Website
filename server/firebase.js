@@ -1,11 +1,12 @@
 const { initializeApp } = require("firebase/app");
-const { getFirestore } = require("firebase/firestore");
 const { getAuth } = require("firebase/auth");
+const { getFirestore } = require("firebase/firestore");
 const { getStorage } = require("firebase/storage");
-const admin = require("firebase-admin");
-const dotenv = require("dotenv");
+const { OAuth2Client } = require("google-auth-library");
 
-dotenv.config();
+const admin = require("firebase-admin");
+
+require("dotenv").config();
 
 const firebaseConfig = {
   apiKey: process.env.API_KEY,
@@ -26,13 +27,22 @@ admin.initializeApp({
     project_id: process.env.FIREBASE_ADMIN_PROJECT_ID,
   }),
   storageBucket: process.env.STORAGE_BUCKET,
-  databaseURL: process.env.FIREBASE_DATABASE_URL,
+});
+
+const CLIENT_ID = process.env.GOOGLE_OAUTH_CLIENT_ID;
+const CLIENT_SECRET = process.env.GOOGLE_OAUTH_CLIENT_SECRET;
+const REDIRECT_URI = process.env.GOOGLE_OAUTH_REDIRECT_URL;
+
+const oauth2Client = new OAuth2Client({
+  clientId: CLIENT_ID,
+  clientSecret: CLIENT_SECRET,
+  redirectUri: REDIRECT_URI,
 });
 
 const firebaseApp = initializeApp(firebaseConfig);
 const auth = getAuth();
-const db = getFirestore(firebaseApp);
 const adminAuth = admin.auth();
+const db = getFirestore(firebaseApp);
 const storage = getStorage();
 
 module.exports = {
@@ -42,4 +52,5 @@ module.exports = {
   admin,
   adminAuth,
   storage,
+  oauth2Client,
 };
