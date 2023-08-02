@@ -42,7 +42,6 @@ const Quizzes = () => {
         <ul className="w-full lg:w-9/12 container-bg flex flex-col items-center sm:default-padding p-2 rounded-lg">
           <>
             {quizzes.map((e, index) => {
-              console.log(e);
               let displayName = e.owner?.displayName;
               let quizData = e?.postData;
               let quizTitle = quizData?.postTitle;
@@ -56,11 +55,7 @@ const Quizzes = () => {
                     <Link
                       to={`/quizzes/${quizURL}`}
                       className="flex items-center aspect-[3/2] border dark:border-customgray border-light drop-shadow-lg rounded-lg overflow-hidden">
-                      <img
-                        className="h-full w-full object-cover hover:scale-125 duration-150 transition-transform ease-in-out"
-                        src={quizImg}
-                        alt=""
-                      />
+                      <img className="h-full w-full object-cover hover:scale-125 duration-150 transition-transform ease-in-out" src={quizImg} alt="" />
                     </Link>
                   </div>
                   <div className="elative flex-1 shrink grow sm:grow-[2] min-w-0 flex flex-col gap-2 font-medium hypen-auto break-words">

@@ -24,6 +24,7 @@ const QuizBoilerPlate = () => {
   const { preview, quizURL, userName } = useParams();
   const [{ postID, quiz: post, owner }, setQuiz] = useState({});
   const [postContent, setPostContent] = useState([]);
+  const [initialPostContent, setInitialPostContent] = useState([]);
   const [versusArr, setVersusArr] = useState([]);
   const [winners, setWinners] = useState([]);
   const [theWinner, setTheWinner] = useState({});
@@ -222,6 +223,7 @@ const QuizBoilerPlate = () => {
 
         const shuffledContent = shuffleArray(e?.data?.postData.postContent);
         setPostContent(shuffledContent);
+        setInitialPostContent(shuffledContent);
         setVersusArr(shuffledContent.slice(0, 2));
         setTimePassed(timeSince(e?.data?.postData.postedAt));
         setRound([0, parseInt(shuffledContent?.length / 2)]);
@@ -347,7 +349,7 @@ const QuizBoilerPlate = () => {
                   {Object.keys(theWinner).length <= 0 ? (
                     <>
                       {/* First Half */}
-                      <div
+                      <figure
                         ref={leftHalfRef}
                         className="flex-col max-w-[50%] flex-1 items-center md:gap-4 gap-2 overflow-hidden duration-200 transition-transform">
                         <div
@@ -364,7 +366,7 @@ const QuizBoilerPlate = () => {
                         <div className="w-full md:font-bold font-medium md:text-lg text-base min-w-0 break-words text-center md:my-4 my-2">
                           <span ref={leftHalfRefText}>{versusArr[0]?.name}</span>
                         </div>
-                      </div>
+                      </figure>
                       {/* Gap */}
                       <div className="self-center flex flex-col items-center gap-4 absolute z-20 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 drop-shadow-md">
                         <div className="!text-yellow-500  bg-darkblue sm:p-4 p-2 rounded-md border">
@@ -380,7 +382,7 @@ const QuizBoilerPlate = () => {
                         )}
                       </div>
                       {/* Second Half */}
-                      <div
+                      <figure
                         ref={rightHalfRef}
                         className="flex-col max-w-[50%] flex-1 items-center md:gap-4 gap-2 overflow-hidden duration-500 transition-transform">
                         <div
@@ -397,25 +399,60 @@ const QuizBoilerPlate = () => {
                         <div className="w-full md:font-bold font-medium md:text-lg text-base min-w-0 break-words text-center md:my-4 my-2">
                           <span ref={rightHalfRefText}>{versusArr[1]?.name}</span>
                         </div>
-                      </div>
+                      </figure>
                     </>
                   ) : (
-                    <div
-                      ref={theWinnerRef}
-                      className="flex-col max-w-[50%] flex-1 items-center md:gap-4 gap-2 overflow-hidden duration-200 transition-transform">
-                      <div
-                        onClick={() => winnerHandler(0, 1)}
-                        className="relative overflow-hidden flex justify-center items-center rounded-lg aspect-[2/3] drop-shadow-lg gradient-border-effect">
-                        <div className="overflow-hidden w-[calc(100%-.5rem)] h-[calc(100%-.5rem)] rounded-lg">
-                          <img
-                            className="w-full h-full object-cover object-top link hover:scale-125 duration-150 transition-transform ease-in-out"
-                            src={theWinner?.image}
-                            alt=""
-                          />
+                    <div className="flex flex-col items-center gap-8">
+                      <figure
+                        ref={theWinnerRef}
+                        className="flex-col max-w-[50%] flex-1 items-center md:gap-4 gap-2 overflow-hidden duration-200 transition-transform">
+                        <div
+                          onClick={() => winnerHandler(0, 1)}
+                          className="relative overflow-hidden flex justify-center items-center rounded-lg aspect-[2/3] drop-shadow-lg gradient-border-effect">
+                          <div className="overflow-hidden w-[calc(100%-.5rem)] h-[calc(100%-.5rem)] rounded-lg">
+                            <img
+                              className="w-full h-full object-cover object-top link hover:scale-125 duration-150 transition-transform ease-in-out"
+                              src={theWinner?.image}
+                              alt=""
+                            />
+                          </div>
                         </div>
-                      </div>
-                      <div className="w-full md:font-bold font-medium md:text-lg text-base min-w-0 break-words text-center md:my-4 my-2">
-                        <span ref={leftHalfRefText}>{theWinner?.name}</span>
+                        <div className="w-full md:font-bold font-medium md:text-lg text-base min-w-0 break-words text-center md:my-4 my-2">
+                          <span ref={leftHalfRefText}>{theWinner?.name}</span>
+                        </div>
+                      </figure>
+                      <div className="">
+                        <ul className="flex flex-col gap-8">
+                          {initialPostContent
+                            .sort((a, b) => b?.winCount - a?.winCount)
+                            .map((el, index) => (
+                              <li key={index} className="flex flex-row gap-4">
+                                <div className="overflow-hidden rounded-lg w-1/6 border border-slate-400 dark:border-white">
+                                  <img
+                                    className="w-full h-full aspect-square object-cover object-top link hover:scale-125 duration-150 transition-transform ease-in-out"
+                                    src={el?.image}
+                                    alt=""
+                                  />
+                                </div>
+                                <div className="flex flex-col flex-1 items-start justify-start">
+                                  <div className="md:font-bold font-medium md:text-lg text-base min-w-0 break-words">
+                                    <span ref={leftHalfRefText}>{el?.name}</span>
+                                  </div>
+                                  <div className="w-full mt-3">
+                                    <span className="mt-auto text-xs italic">Win Rate</span>
+                                    <div className="relative mt-1 w-11/12 h-6 my-auto rounded-md overflow-hidden dark:bg-customslate_dark bg-customslate_light">
+                                      <div
+                                        className="h-full bg-red-600 rounded-r-md"
+                                        style={{ width: `${((el?.winCount / post?.timesPlayed) * 100).toFixed(2)}%` }}></div>
+                                      <span className="absolute left-2 top-1/2 -translate-y-1/2 font-bold">
+                                        {((el?.winCount / post?.timesPlayed) * 100).toFixed(2)}%
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </li>
+                            ))}
+                        </ul>
                       </div>
                     </div>
                   )}
