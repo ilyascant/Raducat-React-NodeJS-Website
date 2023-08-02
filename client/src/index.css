@@ -1,0 +1,239 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Sansita+One:ital,wght@0,400;0,700;0,800;0,900;1,400;1,700;1,800;1,900&display=swap');
+
+
+@layer components {
+  .link {
+    cursor: pointer;
+  }
+  .link:hover{
+    color:#2563EB;
+  }
+
+  .dark-highlight-1{
+    @apply relative dark:hover:text-white dark:hover:before:block dark:before:hidden dark:before:absolute dark:before:-inset-1 dark:before:bg-white/10 dark:before:rounded-md before:-z-10
+  }
+  .dark-highlight-2{
+    @apply relative dark:hover:text-white dark:hover:before:block dark:before:hidden dark:before:absolute dark:before:-inset-2 dark:before:bg-white/10 dark:before:rounded-md before:-z-10
+  }
+  .dark-highlight-1-2{
+    @apply relative dark:hover:text-white dark:hover:before:block dark:before:hidden dark:before:absolute dark:before:-top-1 dark:before:-left-2 dark:before:-bottom-1 dark:before:-right-2 dark:before:bg-white/10 dark:before:rounded-md before:-z-10
+  }
+  
+  .default-padding {
+    @apply md:p-3 p-2
+  }
+  .default-padding-x {
+    @apply md:px-3 px-2
+  }
+  .default-padding-y {
+    @apply md:py-3 py-2
+  }
+
+  .container-bg{
+    @apply dark:bg-darkblue bg-light
+  }
+}
+
+html.dark{
+  background-color: #0F0F0F;
+  
+}
+html.light {
+  background-color: white;
+}
+
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+*:focus {
+  outline: 0 !important;
+  outline: none !important;
+}
+
+
+html.dark::-webkit-scrollbar {
+  width: 8px;
+}
+
+html.dark::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+html.dark::-webkit-scrollbar-thumb {
+  background-color: rgba(209, 213, 219,  0.4);
+  border-radius: 100px;
+}
+
+html::-webkit-scrollbar {
+  width: 8px;
+}
+
+html::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+html::-webkit-scrollbar-thumb {
+  background-color: #3F3F3F;
+  border-radius: 100px;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont ,"Poppins", "Roboto", 'Segoe UI', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+.header-list::-webkit-scrollbar{
+  display: none;
+}
+
+.header-list {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  overflow: -moz-scrollbars-none;
+}
+
+
+
+
+
+/* 
+
+
+
+
+
+
+*/
+
+.gradient-border-effect {
+  --border-size: 8px;
+  --border-angle: 0turn;
+  background-image: conic-gradient(
+      from var(--border-angle),
+      #213,
+      #112 50%,
+      #213
+    ),
+    conic-gradient(from var(--border-angle), transparent 20%, #00b8ff, #FF0000);
+  background-size: calc(100% - (var(--border-size) * 2))
+      calc(100% - (var(--border-size) * 2)),
+    cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+
+  animation: bg-spin 3s linear infinite;
+}
+
+.gradient-border-effect-reverse {
+  --border-size: 8px;
+  --border-angle: 0turn;
+  background-image: conic-gradient(
+      from var(--border-angle),
+      #213,
+      #112 50%,
+      #213
+    ),
+    conic-gradient(from var(--border-angle), transparent 20%, #00b8ff, #FF0000);
+  background-size: calc(100% - (var(--border-size) * 2))
+      calc(100% - (var(--border-size) * 2)),
+    cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+
+  animation: bg-spin-reverse 3s linear infinite;
+}
+
+
+@media (hover: hover) and (pointer: fine) {
+  .gradient-border-effect-reverse:hover{
+    animation: bg-spin-reverse .5s linear infinite;
+  }
+  .gradient-border-effect:hover{
+    animation: bg-spin .5s linear infinite;
+  }
+}
+
+@keyframes bg-spin {
+  to {
+    --border-angle: 1turn;
+  }
+}
+@keyframes bg-spin-reverse {
+  to {
+    --border-angle: -1turn;
+  }
+}
+
+@property --border-angle {
+  syntax: "<angle>";
+  inherits: true;
+  initial-value: 0turn;
+}
+
+
+
+.confetti-piece {
+  z-index: 50;
+  width: 10px;
+  height: 10px;
+  content: '\f2d3';
+  margin-left: -1.5em;
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0;
+  transform: translateY(-20px) rotate(45deg);
+  animation: fall linear 10s, spin-confetti linear 10s;
+}
+
+@keyframes fall {
+  0% {
+    opacity: 1;
+    transform: translateY(-20px) rotate(45deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(100vh) rotate(45deg);
+  }
+}
+
+@keyframes spin-confetti {
+  0% {
+    transform: translateY(-20px) rotate(0deg);
+  }
+  100% {
+    transform: translateY(100vh) rotate(360deg);
+  }
+}
+
+.scale_animation {
+  transform: scale(10);
+  animation: scaleAnimation 2s ease-out forwards;
+}
+
+
+@keyframes scaleAnimation {
+  0% {
+    transform: scale(10); /* Start at 150% */
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1); /* End at 100% */
+    opacity: 1;
+  }
+}
+
+
+
