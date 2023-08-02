@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router";
+import { AnimatePresence, motion } from "framer-motion";
 import fetchData from "../utils/fetchData";
 import timeSince from "../utils/timeSince";
 import Spinner from "../components/Spinner";
@@ -19,16 +20,17 @@ function shuffleArray(array) {
 const QuizBoilerPlate = () => {
   const [{ user, windowWidth }, dispatch] = useStateValue();
 
-  const [leftHalfRef, rightHalfRef, leftHalfRefText, rightHalfRefText, theWinnerRef] = [useRef(), useRef(), useRef(), useRef(), useRef()];
+  const [leftHalfRef, rightHalfRef, leftHalfRefText, rightHalfRefText, theWinnerRef, resultRef] = [useRef(), useRef(), useRef(), useRef(), useRef(), useRef()];
 
   const { preview, quizURL, userName } = useParams();
-  const [{ postID, quiz: post, owner }, setQuiz] = useState({});
+  const [{ postID, post, owner }, setQuiz] = useState({});
   const [postContent, setPostContent] = useState([]);
   const [initialPostContent, setInitialPostContent] = useState([]);
   const [versusArr, setVersusArr] = useState([]);
   const [winners, setWinners] = useState([]);
   const [theWinner, setTheWinner] = useState({});
   const [round, setRound] = useState([]);
+  const [timesPlayed, setTimesPlayed] = useState(null);
   const [timePassed, setTimePassed] = useState("unknown");
   const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(true);
@@ -76,6 +78,7 @@ const QuizBoilerPlate = () => {
       clickHandler(winnerIndex, content);
     }
   }
+
   function clickHandler(winnerIndex, content) {
     setDisabled(true);
     if (leftHalfRef.current) {
@@ -88,8 +91,8 @@ const QuizBoilerPlate = () => {
       rightHalfRef.current.style.zIndex = winnerIndex === 1 ? "30" : "25";
       leftHalfRefText.current.style.display = winnerIndex === 1 ? "none" : "block";
     }
-    const timer = 500;
-    const delay = 300;
+    const timer = 1 || 500;
+    const delay = 1 || 300;
 
     setTimeout(() => {
       if (leftHalfRef.current) {
@@ -100,10 +103,15 @@ const QuizBoilerPlate = () => {
       }
     }, timer);
     setTimeout(() => {
-      leftHalfRef.current.style.zIndex = leftHalfRef.current && "0";
-      rightHalfRef.current.style.zIndex = rightHalfRef.current && "0";
-      rightHalfRefText.current.style.display = "block";
-      leftHalfRefText.current.style.display = "block";
+      if (leftHalfRef.current) {
+        leftHalfRef.current.style.zIndex = leftHalfRef.current && "0";
+        leftHalfRefText.current.style.display = "block";
+      }
+      if (rightHalfRef.current) {
+        rightHalfRef.current.style.transform = "translate(0, 0)";
+        rightHalfRef.current.style.zIndex = rightHalfRef.current && "0";
+        rightHalfRefText.current.style.display = "block";
+      }
       setDisabled(false);
       setVersusArr(content.slice(0, 2));
     }, timer + delay);
@@ -180,7 +188,7 @@ const QuizBoilerPlate = () => {
     };
   }, []);
 
-  useEffect(() => {
+  useMemo(async () => {
     if (Object.keys(theWinner).length > 0) {
       if (post)
         fetchData("/api/getquizzes/givepoint", {
@@ -189,7 +197,39 @@ const QuizBoilerPlate = () => {
             method: "post",
             withCredentials: true,
           },
-          successCallBack: (e) => e,
+          successCallBack: async (e) => {
+            const fetchURL = !preview
+              ? `/api/getquizzes/approved/${userName + "/" + quizURL}`
+              : `/api/getquizzes/unapproved/preview/${userName + "/" + quizURL}`;
+            await fetchData(fetchURL, {
+              options: {
+                method: "get",
+                withCredentials: true,
+              },
+              successCallBack: (e) => {
+                setTimesPlayed(e?.data?.postData?.timesPlayed);
+                const shuffledContent = shuffleArray(e?.data?.postData.postContent);
+                setInitialPostContent(shuffledContent);
+                if (resultRef)
+                  setTimeout(() => {
+                    resultRef?.current.scrollIntoView({ behavior: "smooth" });
+                  }, 1000);
+              },
+              failCallBack: () => {
+                setTimesPlayed(post?.timesPlayed + 1);
+                setInitialPostContent((prev) => {
+                  const newArr = [...prev];
+                  const foundWinnerData = newArr.find((el) => el?.name === theWinner?.name);
+                  foundWinnerData.winCount++;
+                  return newArr;
+                });
+                if (resultRef)
+                  setTimeout(() => {
+                    resultRef?.current.scrollIntoView({ behavior: "smooth" });
+                  }, 1000);
+              },
+            });
+          },
           failCallBack: (e) => {
             setAlertStatus("fail");
             setAlertMessage(e?.response?.data?.message || alertMessage);
@@ -218,8 +258,9 @@ const QuizBoilerPlate = () => {
         withCredentials: true,
       },
       successCallBack: (e) => {
-        setQuiz({ quiz: e?.data?.postData, owner: e?.data?.owner, postID: e?.data?.postData?.postID });
+        setQuiz({ post: e?.data?.postData, owner: e?.data?.owner, postID: e?.data?.postData?.postID });
         setTimePassed(timeSince(e?.data?.postData?.postedAt));
+        setTimesPlayed(e?.data?.postData?.timesPlayed);
 
         const shuffledContent = shuffleArray(e?.data?.postData.postContent);
         setPostContent(shuffledContent);
@@ -342,14 +383,18 @@ const QuizBoilerPlate = () => {
 
             {/* content */}
             {Object.keys(theWinner).length > 0 && <Confetti />}
-
             <fieldset className="relative">
               {
                 <div className="flex flex-row justify-center md:gap-4 gap-2">
                   {Object.keys(theWinner).length <= 0 ? (
                     <>
                       {/* First Half */}
-                      <figure
+                      <motion.figure
+                        key={versusArr[0]?.name}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ ease: "linear", duration: 0.5 }}
                         ref={leftHalfRef}
                         className="flex-col max-w-[50%] flex-1 items-center md:gap-4 gap-2 overflow-hidden duration-200 transition-transform">
                         <div
@@ -366,7 +411,7 @@ const QuizBoilerPlate = () => {
                         <div className="w-full md:font-bold font-medium md:text-lg text-base min-w-0 break-words text-center md:my-4 my-2">
                           <span ref={leftHalfRefText}>{versusArr[0]?.name}</span>
                         </div>
-                      </figure>
+                      </motion.figure>
                       {/* Gap */}
                       <div className="self-center flex flex-col items-center gap-4 absolute z-20 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 drop-shadow-md">
                         <div className="!text-yellow-500  bg-darkblue sm:p-4 p-2 rounded-md border">
@@ -382,7 +427,12 @@ const QuizBoilerPlate = () => {
                         )}
                       </div>
                       {/* Second Half */}
-                      <figure
+                      <motion.figure
+                        key={versusArr[1]?.name}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ ease: "linear", duration: 0.5 }}
                         ref={rightHalfRef}
                         className="flex-col max-w-[50%] flex-1 items-center md:gap-4 gap-2 overflow-hidden duration-500 transition-transform">
                         <div
@@ -399,10 +449,10 @@ const QuizBoilerPlate = () => {
                         <div className="w-full md:font-bold font-medium md:text-lg text-base min-w-0 break-words text-center md:my-4 my-2">
                           <span ref={rightHalfRefText}>{versusArr[1]?.name}</span>
                         </div>
-                      </figure>
+                      </motion.figure>
                     </>
                   ) : (
-                    <div className="flex flex-col items-center gap-8">
+                    <div className="flex flex-col items-center gap-32">
                       <figure
                         ref={theWinnerRef}
                         className="flex-col max-w-[50%] flex-1 items-center md:gap-4 gap-2 overflow-hidden duration-200 transition-transform">
@@ -421,31 +471,34 @@ const QuizBoilerPlate = () => {
                           <span ref={leftHalfRefText}>{theWinner?.name}</span>
                         </div>
                       </figure>
-                      <div className="">
-                        <ul className="flex flex-col gap-8">
+                      <div ref={resultRef} className="result__section">
+                        <ul className="flex flex-col gap-8 mt-8">
                           {initialPostContent
                             .sort((a, b) => b?.winCount - a?.winCount)
                             .map((el, index) => (
                               <li key={index} className="flex flex-row gap-4">
-                                <div className="overflow-hidden rounded-lg w-1/6 border border-slate-400 dark:border-white">
+                                <div className="overflow-hidden flex-1 grow rounded-lg aspect-square border border-slate-400 dark:border-white">
                                   <img
-                                    className="w-full h-full aspect-square object-cover object-top link hover:scale-125 duration-150 transition-transform ease-in-out"
+                                    className="w-full h-full object-cover object-top link hover:scale-125 duration-150 transition-transform ease-in-out"
                                     src={el?.image}
                                     alt=""
                                   />
                                 </div>
-                                <div className="flex flex-col flex-1 items-start justify-start">
+                                <div className="flex flex-col flex-1 sm:grow-[4] grow-[2] items-start justify-start">
                                   <div className="md:font-bold font-medium md:text-lg text-base min-w-0 break-words">
                                     <span ref={leftHalfRefText}>{el?.name}</span>
                                   </div>
                                   <div className="w-full mt-3">
                                     <span className="mt-auto text-xs italic">Win Rate</span>
                                     <div className="relative mt-1 w-11/12 h-6 my-auto rounded-md overflow-hidden dark:bg-customslate_dark bg-customslate_light">
-                                      <div
-                                        className="h-full bg-red-600 rounded-r-md"
-                                        style={{ width: `${((el?.winCount / post?.timesPlayed) * 100).toFixed(2)}%` }}></div>
+                                      <motion.div
+                                        initial={{ width: 0 }}
+                                        whileInView={{ width: `${((el?.winCount / timesPlayed) * 100).toFixed(2)}%` }}
+                                        viewport={{ once: true }}
+                                        transition={{ duration: 0.5 }}
+                                        className="h-full bg-red-600 rounded-r-md"></motion.div>
                                       <span className="absolute left-2 top-1/2 -translate-y-1/2 font-bold">
-                                        {((el?.winCount / post?.timesPlayed) * 100).toFixed(2)}%
+                                        {((el?.winCount / timesPlayed) * 100).toFixed(2)}%
                                       </span>
                                     </div>
                                   </div>
