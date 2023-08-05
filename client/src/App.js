@@ -12,6 +12,7 @@ import Footer from "./components/Footer";
 import Quizzes from "./pages/Quizzes";
 import NewQuiz from "./pages/NewQuiz";
 import QuizBoilerPlate from "./pages/QuizBoilerPlate";
+import HomePage from "./pages/HomePage";
 
 function App() {
   const [{ user }, dispatch] = useStateValue();
@@ -38,15 +39,16 @@ function App() {
         <div className="relative w-full h-full min-h-screen">
           <Header />
           <Routes>
+            <Route exact path="/" element={<HomePage />} />
             <Route exact path="adminpanel" element={<AdminPanel />} />
             <Route exact path="auth">
               <Route exact path="signin" element={<SignIn />} />
               <Route exact path="signup" element={<SignUp />} />
             </Route>
             <Route exact path="createpost">
-              <Route index element={<ProtectedCreate component={<CreatePost />} user={user} />} />
-              <Route path="post" element={<ProtectedCreate component={<NewPost />} user={user} />} />
-              <Route path="elimination" element={<ProtectedCreate component={<NewQuiz />} user={user} />} />
+              <Route exact index element={<ProtectedCreate component={<CreatePost />} user={user} />} />
+              <Route exact path="post" element={<ProtectedCreate component={<NewPost />} user={user} />} />
+              <Route exact path="elimination" element={<ProtectedCreate component={<NewQuiz />} user={user} />} />
             </Route>
             <Route exact path="posts">
               <Route exact index element={<Posts />} />

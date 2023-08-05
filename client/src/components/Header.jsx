@@ -68,7 +68,7 @@ const Header = () => {
         <div id="pageOverlay" className="fixed top-0 left-0 bg-black/30 w-full h-full z-30"></div>
       )} */}
       <header className="header-container dark:mb-0 mb-8 relative z-40 flex h-16 w-full items-center justify-center bg-white drop-shadow-md dark:bg-dark dark:drop-shadow-none">
-        <div className="wrapper max-w-container flex h-full w-full justify-between default-padding-x">
+        <div className="wrapper max-w-container flex h-full w-full default-padding-x">
           {/* LEFT SIDE */}
           <div className="flex h-full items-center gap-2">
             <button className="dark-highlight-1 inline-block">
@@ -79,7 +79,7 @@ const Header = () => {
             </Link>
           </div>
           {/* MIDDLE SIDE */}
-          <nav>
+          <nav className="ml-8 mr-auto">
             <ul className="header-list flex h-full items-center gap-4 text-base font-medium text-black dark:text-white lg:gap-6">
               <li className="link dark-highlight-1-2 inline-block">
                 <Link to={"/quizzes"}>Quizzes</Link>
