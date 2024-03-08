@@ -21,9 +21,9 @@ const HomePage = () => {
                     <MdChevronLeft className="text-3xl text-white" />
                     {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map((e, index) =>
                       index === 8 ? (
-                        <button className="bg-white aspect-square flex-1 rounded-full scale-[2.5]" />
+                        <button key={index} className="bg-white aspect-square flex-1 rounded-full scale-[2.5]" />
                       ) : (
-                        <button className="bg-white aspect-square flex-1 rounded-full" />
+                        <button key={index} className="bg-white aspect-square flex-1 rounded-full" />
                       )
                     )}
                     <MdChevronRight className="text-3xl text-white" />

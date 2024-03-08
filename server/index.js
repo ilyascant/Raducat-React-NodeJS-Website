@@ -14,7 +14,7 @@ const editPostRouter = require("./routes/editPostRouter.js");
 const getQuizzesRouter = require("./routes/getQuizzesRouter.js");
 
 const app = express();
-const PORT = 8800;
+const PORT = 8080;
 
 require("dotenv").config();
 
@@ -23,7 +23,6 @@ app.use(cors());
 
 app.use(express.json({ extended: false }));
 
-app.use("/", indexRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/createpost", createPostRouter);
 app.use("/api/editpost", editPostRouter);
@@ -34,8 +33,10 @@ app.use("/api/getposts", getPostsRouter);
 // QUIZZES
 app.use("/api/getquizzes", getQuizzesRouter);
 
-app.get("/*", (req, res, next) => {
-  res.sendFile(path.resolve(__dirname + "/build/index.html"));
+app.use(express.static(path.join(__dirname, "build")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
 });
 
 app.use((err, req, res, next) => {
@@ -49,5 +50,4 @@ app.use((err, req, res, next) => {
   });
 });
 
-// app.listen(PORT, () => console.log(`Server is Running On PORT: ${PORT}`));
-module.exports = app;
+app.listen(PORT, () => console.log(`Server is Running On PORT: ${PORT}`));
