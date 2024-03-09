@@ -4,7 +4,7 @@
 
 ## Overview
 
-Welcome to [Project Name], a full-stack web application designed to provide an interactive and engaging platform for creating, sharing, and participating in quizzes and elimination tests. Leveraging modern technologies, the project is built with a Front-End using ReactJS, Back-End powered by NodeJS/Express, and styled with the sleek Tailwind CSS framework.
+A full-stack web application designed to provide an interactive and engaging platform for creating, sharing, and participating in quizzes and elimination tests. The project is built with a Front-End using ReactJS, Back-End powered by NodeJS/Express, and styled with the Tailwind CSS framework.
 
 ## Features
 
