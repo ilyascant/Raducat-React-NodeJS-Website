@@ -72,37 +72,41 @@ Edit Quizz                 |  Edit Post
 
 Efficiently edit and enhance your quizzes and posts with editing options.
 
+<br/>
+
+---
+
 
 ## Tech Palette
 
-- **Front End:**
-  - Crafted with the power of ReactJS 🚀
+  - ### Front End (ReactJS)
 
-- **Back End:**
-  - Engineered using NodeJS / Express
-  - Database: Firebase, Google Cloud Storage
+    - **React Routers:** Implementing protected pages for a secure user experience.
+    - **State Provider with Reducer and Context:** Managing global state efficiently for a consistent application state.
+    - **Custom Tailwind Layers of Utilities:** Crafting a unique and responsive user interface with customized Tailwind CSS layers.
+    - **Media Upload:** Users can upload images effortlessly, utilizing a convenient drag-and-drop feature.
 
-- **Infrastructure:**
-  - **AWS EC2 Hosting:**
-    - Deployed on AWS EC2, ensuring a scalable and reliable server.
-    - Utilized PM2 for efficient Node server management.
+  - ### Back End (NodeJS / ExpressJS)
 
-  - **Nginx Configuration:**
-    - Configured Nginx to handle subdomains, such as [dev.raducat.com](https://dev.raducat.com).
-    - Implemented SSL certificates to secure your connections.
-    - Optimized performance by adjusting Nginx settings and leveraging caching strategies.
+    - **Express Routers and Middlewares:** Structuring your backend with modular routers and implementing middleware for additional functionalities.
+    - **Error Handling:** Ensuring a robust server by implementing error handling mechanisms.
+    - **Firebase Integration:** Leveraging Firebase for database management and other backend functionalities.
+    - **Authentication:** Enable secure user access through the choice of Google and traditional web authentication.
+    - **Media Upload:** Users can upload images to Google Cloud.
+    
+  - ### Server Deployment (AWS EC2, PM2, Nginx)
 
-  - **AWS Services:**
-    - Leveraged various AWS services for a robust and scalable infrastructure.
-    - Utilized Amazon RDS for database management and Amazon S3 for efficient storage.
+    - **AWS EC2 Hosting:** Deploying your Node server on AWS EC2 for scalability and reliability.
+    - **PM2 for Node Server:** Utilizing PM2 to manage your Node server and ensure continuous uptime.
+    - **Nginx Configuration:** Configuring Nginx for subdomain handling (dev.raducat.com), adding SSL certificates for secure connections, and changing body limit size to send bigger bodies etc.
 
-  - **Monitoring and Logging:**
-    - Implemented monitoring solutions like AWS CloudWatch for real-time insights.
-    - Utilized logging mechanisms to track server activities and user interactions.
+---
 
-  - **Security Measures:**
-    - Employed AWS security groups and network ACLs to enhance server security.
-    - Regularly updated and patched server dependencies to mitigate potential vulnerabilities.
+## Additional Features
+
+  - **Cookies and Local Storage:** Implementing secure storage mechanisms for user data on the client side.
+  - **Static Build Rendering:** Utilizing static build to render pages efficiently and enhance overall performance.
+
 
 ## Deployment
 
@@ -110,6 +114,4 @@ Efficiently edit and enhance your quizzes and posts with editing options.
 
 Immerse yourself in the vibrant journey and contribute to make Raducat even more exciting and engaging! 🚀
 
-## Light Theme | Dark Theme
 
-![Light Theme](https://github.com/ilyascant/raducat/assets/79863003/8f5e689b-0d41-4966-b26d-e21f735cba79) | ![Dark Theme](https://github.com/ilyascant/raducat/assets/79863003/5ebbd449-f3d3-4f80-8d33-c4641fc828f1)
