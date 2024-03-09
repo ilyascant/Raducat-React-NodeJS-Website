@@ -76,8 +76,7 @@ Efficiently edit and enhance your quizzes and posts with editing options.
 
 ---
 
-
-## Tech Palette
+## Tech Palette 🎨
 
   - ### Front End (ReactJS)
 
@@ -102,14 +101,12 @@ Efficiently edit and enhance your quizzes and posts with editing options.
 
 ---
 
-## Additional Feature
+## Additional Feature 🌟
   - **Cookies and Local Storage:** Implementing secure storage mechanisms for user data on the client side.
 
+## Deployment 🚀
 
-## Deployment
-
-- **Check out our live demo:** [Raducat Social/Fun Platform](https://raducat.shop)
-
-Immerse yourself in the vibrant journey and contribute to make Raducat even more exciting and engaging! 🚀
+- **Check out live demo:** [Raducat Social/Fun Platform](https://raducat.shop) ✨
+  
 
 
