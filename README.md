@@ -1,6 +1,6 @@
 # Raducat Social/Fun Platform
 
-# [🚀 Demo](https://raducat.shop)
+# [🚀 Demo](https://raducat.com)
 
 ## Overview
 
