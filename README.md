@@ -10,9 +10,9 @@ Welcome to Raducat Social/Fun Platform, where creativity and engagement collide!
 
 ### 🎨 Main Page with Dark/Light Versions
 
-Light Theme                |  Dark Theme     
+Dark Theme                 |  Light Theme     
 :-------------------------:|:-------------------------:
-![Main Page - Light Version](https://github.com/ilyascant/raducat/assets/79863003/66974bcf-7927-4808-a5be-03ad0eb6cc62) |  ![Main Page - Dark Version](https://github.com/ilyascant/raducat/assets/79863003/ef483796-fa27-42a8-9d15-0197bcdb5c25)
+![Main Page - Dark Theme](https://github.com/ilyascant/raducat/assets/79863003/66974bcf-7927-4808-a5be-03ad0eb6cc62) |  ![Main Page - Light Theme](https://github.com/ilyascant/raducat/assets/79863003/ef483796-fa27-42a8-9d15-0197bcdb5c25)
 
 Witness Raducat's dynamic personality with our seamlessly integrated light and dark versions.
 
