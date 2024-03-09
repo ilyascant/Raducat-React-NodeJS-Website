@@ -102,10 +102,8 @@ Efficiently edit and enhance your quizzes and posts with editing options.
 
 ---
 
-## Additional Features
-
+## Additional Feature
   - **Cookies and Local Storage:** Implementing secure storage mechanisms for user data on the client side.
-  - **Static Build Rendering:** Utilizing static build to render pages efficiently and enhance overall performance.
 
 
 ## Deployment
