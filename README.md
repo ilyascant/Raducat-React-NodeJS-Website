@@ -107,6 +107,7 @@ Efficiently edit and enhance your quizzes and posts with editing options.
 ## Deployment 🚀
 
 - **Check out live demo:** [Raducat Social/Fun Platform](https://raducat.com) ✨
-  
+
+<img src="https://t.bkit.co/w_6688c89c66ebd.gif" />
 
 
